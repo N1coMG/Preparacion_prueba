@@ -82,6 +82,107 @@ def actualizar_precio(busc_codigo, nuevo_precio, dicc_arreglos, bodega):
     else:
         return False
 
+def codigo_val(codigo_nv, arreglos):
+    if len(codigo_nv) == 0:
+        return False
+    for codigo in arreglos.keys():
+        if codigo == codigo_nv:
+            return False
+    return True
+
+def nombre_val(nombre):
+    if len(nombre) == 0:
+        return False
+    return True
+
+def tipo_val(tipo):
+    if len(tipo) == 0:
+        return False
+    return True
+
+def color_val(color):
+    if len(color) == 0:
+        return False
+    return True
+
+def tamaño_val(tamño):
+    if tamño != "S" and tamño != "M" and tamño != "L":
+        return False
+    return True
+
+def tarjeta_val(tarjeta):
+    if tarjeta == "s":
+        return True
+    elif tarjeta == "n":
+        return False
+
+def temporada_val(temporada):
+    if len(temporada) == 0:
+        return False
+    return True
+
+def precio_val(precio):
+    try:
+        precio_int = int(precio)
+        if precio_int <= 0:
+            return False
+        return True
+    except ValueError:
+        return False
+
+def unidades_val(unidades):
+    try: 
+        unidades_int = int(unidades)
+        if unidades_int < 0:
+            return False
+        return True
+    except ValueError:
+        return False
+
+def agregar_arreglo(codigo, nombre, tipo, color, tamaño, tarjeta, temporada, precio, unidades, dicc_arreglos, bodega):
+            
+    val_codigo = codigo_val(codigo, dicc_arreglos)
+    val_nombre = nombre_val(nombre)
+    val_tipo = tipo_val(tipo_nv)
+    val_color = color_val(color)
+    val_tamaño = tamaño_val(tamaño)
+    val_tarjeta = tarjeta_val(tarjeta)
+    val_temporada = temporada_val(tamaño)
+    val_precio = precio_val(precio)
+    val_unidad = unidades_val(unidades)
+    
+    if val_codigo == True and val_nombre == True and val_tipo == True and val_color == True and val_tamaño == True and val_temporada == True and val_precio == True and val_unidad == True:
+        if tarjeta == "s":
+            bool_tarj = True
+        else:
+            bool_tarj = False     
+        dicc_arreglos[codigo] = [nombre, tipo, color, tamaño, bool_tarj, temporada]
+        bodega[codigo] = [precio, unidades]
+        return True
+    for i in dicc_arreglos.keys():
+        if i == codigo:
+            print("El codigo ya existe")
+    if val_codigo == False:
+        print("ERROR: el campo de codigo es invalido")
+    elif val_nombre == False:
+        print("ERROR: El campo de nombre es invalido")
+    elif val_tipo == False:
+        print("ERROR: el campo de tipo es invalido")
+    elif val_color == False:
+        print("ERROR en campo de color")
+    elif val_tamaño == False:
+        print("ERROR en campo de tamaño")
+    elif val_tarjeta == False:
+        print("ERROR en campo de tarjeta")
+    elif val_temporada == False:
+        print("error en cmapo temporada")
+    elif val_precio == False:
+        print("ERROR en precio")
+    elif val_unidad == False:
+        print("ERROR en unidades")
+    return False
+    
+
 while opcion != 6:
     opcion = leer_menu()
     match opcion:
@@ -128,8 +229,24 @@ while opcion != 6:
                         print("Opcion invalida")
         case 4:
             print("")
+            codigo_nv = input("Ingrese nuevo codigo: ").upper().strip()
+            nombre_nv = input("Ingrese nuevio nombre: ").title().strip()
+            tipo_nv = input("Ingrese nuevo tipo: ").lower().strip()
+            color_pr_nv = input("Ingrese nuevo colo principal: ").lower().strip()
+            tamaño_nv = input("Ingrese nuevo tamaño: ").upper().strip()
+            inc_tarj_nv = input("Incluye tarjeta? (s o n) ").lower().strip()
+            temporada_nv = input("Ingrese temporada: ").lower().strip()
+            precio_nc = input("Ingrese precio: ").strip()
+            unidades_nc = input("Ingrese unidades: ").strip()
+
+            agregado = agregar_arreglo(codigo_nv, nombre_nv, tipo_nv, color_pr_nv, tamaño_nv, inc_tarj_nv, temporada_nv, precio_nc, unidades_nc, dicc_arreglos, bodega)
+            if agregado == True:
+                print("Arreglo Agregado")
+
         case 5:
             print("")
+            #ya me voy a dormir, la logica de eliminar es simple, para eliminar la key con sus items,
+            #solo debo usar del diccionario[key] y ya!!
         case 6:
             print("\nPrograma finalizado.")
         case _:
