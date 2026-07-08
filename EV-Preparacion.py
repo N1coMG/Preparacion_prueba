@@ -66,12 +66,21 @@ def busqueda_precio(bodega, p_minimo, p_maximo, arreglos):
         print("No hay arreglos en ese rango de precios.")
 
 def bsucar_codigo(codigo, arreglos):
-    for codigo_bodega in arreglos.key():
+    for codigo_bodega in arreglos.keys():
         if codigo_bodega == codigo:
             return True
         else:
             return False
 
+def actualizar_precio(busc_codigo, nuevo_precio, dicc_arreglos, bodega):
+    verificacion = bsucar_codigo(busc_codigo, dicc_arreglos)
+    if verificacion == True:
+        for codigo, precio in bodega.items():
+            if codigo == busc_codigo:
+                precio[0] = nuevo_precio
+                return True
+    else:
+        return False
 
 while opcion != 6:
     opcion = leer_menu()
@@ -94,8 +103,29 @@ while opcion != 6:
                 print("ERROR: Ingrese valores enteros.")
         case 3:
             print("")
-            busc_codigo = input("Ingrese codigo: ").upper().strip()
-            existe = bsucar_codigo(busc_codigo, dicc_arreglos)
+            otro = "a"
+            while otro != "n":
+                busc_codigo = input("Ingrese codigo: ").upper().strip()
+                while True:
+                    try: 
+                        nuevo_precio = int(input(f"Ingrese nuevo precio para {busc_codigo}: "))
+                        if nuevo_precio > 0:
+                            break
+                        else:
+                            print("El precio nuevo debe ser mayor a 0")
+                    except ValueError:
+                        print("Ingrese un valor numerico positivo.")
+                existe = actualizar_precio(busc_codigo, nuevo_precio, dicc_arreglos, bodega)
+                if existe == True:
+                    print("Precio actualizado.")
+                else:
+                    print("El codigo no existe")
+                while True:
+                    otro = input("¿Desea actualizar otro precio (s/n)?").lower().strip()
+                    if otro == "s" or otro == "n":
+                        break
+                    else:
+                        print("Opcion invalida")
         case 4:
             print("")
         case 5:
